@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32516.85
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkflowAppWorker", "WorkflowAppWorker\WorkflowAppWorker.csproj", "{9E815D2C-E753-4B9F-A120-CCBF67C5CFE5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkflowAppWorker.Core", "WorkflowAppWorker.Core\WorkflowAppWorker.Core.csproj", "{2A1AAE41-BBBC-43CD-976A-DDF2E49D3380}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkflowAppWorker.Core.UnitTests", "WorkflowAppWorker.Core.UnitTests\WorkflowAppWorker.Core.UnitTests.csproj", "{72B237A2-1548-4DD6-B154-1EE97A60F728}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkflowAppWorker.Domain", "WorkflowAppWorker.Domain\WorkflowAppWorker.Domain.csproj", "{26246CE8-1BA2-4ACE-BA6B-593F7A0F8ECE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkflowAppWorker.Infrastructure", "WorkflowAppWorker.Infrastructure\WorkflowAppWorker.Infrastructure.csproj", "{4363FC77-167A-4EE1-AE4F-A1370901E511}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkflowAppWorker.Infrastructure.UnitTests", "WorkflowAppWorker.Infrastructure.UnitTests\WorkflowAppWorker.Infrastructure.UnitTests.csproj", "{5FA9F2EC-1EA8-4464-A843-18FA386B5619}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9E815D2C-E753-4B9F-A120-CCBF67C5CFE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E815D2C-E753-4B9F-A120-CCBF67C5CFE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E815D2C-E753-4B9F-A120-CCBF67C5CFE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E815D2C-E753-4B9F-A120-CCBF67C5CFE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A1AAE41-BBBC-43CD-976A-DDF2E49D3380}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A1AAE41-BBBC-43CD-976A-DDF2E49D3380}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A1AAE41-BBBC-43CD-976A-DDF2E49D3380}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A1AAE41-BBBC-43CD-976A-DDF2E49D3380}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72B237A2-1548-4DD6-B154-1EE97A60F728}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72B237A2-1548-4DD6-B154-1EE97A60F728}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72B237A2-1548-4DD6-B154-1EE97A60F728}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72B237A2-1548-4DD6-B154-1EE97A60F728}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26246CE8-1BA2-4ACE-BA6B-593F7A0F8ECE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26246CE8-1BA2-4ACE-BA6B-593F7A0F8ECE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26246CE8-1BA2-4ACE-BA6B-593F7A0F8ECE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26246CE8-1BA2-4ACE-BA6B-593F7A0F8ECE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4363FC77-167A-4EE1-AE4F-A1370901E511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4363FC77-167A-4EE1-AE4F-A1370901E511}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4363FC77-167A-4EE1-AE4F-A1370901E511}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4363FC77-167A-4EE1-AE4F-A1370901E511}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FA9F2EC-1EA8-4464-A843-18FA386B5619}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FA9F2EC-1EA8-4464-A843-18FA386B5619}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FA9F2EC-1EA8-4464-A843-18FA386B5619}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FA9F2EC-1EA8-4464-A843-18FA386B5619}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {30961EB0-655D-4D89-AE1E-8D3F75A43C58}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,335 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "Initialize_Current_Step_Status": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "Current_Step_Status",
+                            "type": "integer",
+                            "value": 2
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Initialize_Filtered_State_Array_Length": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "InitializeVariable"
+            },
+            "Initialize_Current_Workflow_Metadata": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "Current_Workflow",
+                            "type": "object",
+                            "value": "@workflow().run"
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Initialize_Return_Code": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "InitializeVariable"
+            },
+            "Initialize_Filtered_State_Array_Length": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "Filtered_State_Array_Length",
+                            "type": "integer",
+                            "value": 0
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Initialize_Current_Workflow_Metadata": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "InitializeVariable"
+            },
+            "Initialize_Return_Code": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "Return_Code",
+                            "type": "integer",
+                            "value": 500
+                        }
+                    ]
+                },
+                "runAfter": {},
+                "type": "InitializeVariable"
+            },
+            "Main_Activity": {
+                "actions": {
+                    "If_state_or_workflowexecutionguid_is_null": {
+                        "actions": {
+                            "Response_Code_400": {
+                                "inputs": {
+                                    "statusCode": 400
+                                },
+                                "kind": "http",
+                                "runAfter": {},
+                                "type": "Response"
+                            }
+                        },
+                        "else": {
+                            "actions": {
+                                "Filter_State_Array": {
+                                    "inputs": {
+                                        "from": "@triggerBody()['State']",
+                                        "where": "@equals(item()?['StepId'], triggerBody()['StepId'])"
+                                    },
+                                    "runAfter": {},
+                                    "type": "Query"
+                                },
+                                "Is_filtered_state_array_length_is_equals_to_1": {
+                                    "actions": {
+                                        "Is_Status_Active": {
+                                            "actions": {
+                                                "Set_Return_code_to_400_for_active_status": {
+                                                    "inputs": {
+                                                        "name": "Return_Code",
+                                                        "value": 400
+                                                    },
+                                                    "runAfter": {},
+                                                    "type": "SetVariable"
+                                                }
+                                            },
+                                            "else": {
+                                                "actions": {
+                                                    "Set_Return_Code_to_200": {
+                                                        "inputs": {
+                                                            "name": "Return_Code",
+                                                            "value": 200
+                                                        },
+                                                        "runAfter": {},
+                                                        "type": "SetVariable"
+                                                    }
+                                                }
+                                            },
+                                            "expression": {
+                                                "and": [
+                                                    {
+                                                        "equals": [
+                                                            "@variables('Current_Step_Status')",
+                                                            2
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            "runAfter": {},
+                                            "type": "If"
+                                        }
+                                    },
+                                    "else": {
+                                        "actions": {
+                                            "Activity_Start": {
+                                                "inputs": {
+                                                    "parameters": {
+                                                        "entityName": "workflow-step-request",
+                                                        "message": {
+                                                            "contentData": {
+                                                                "ActivityEventType": "StartWorkflowStep",
+                                                                "OwnerInstanceGuid": "@triggerBody()['OwnerInstanceGuid']",
+                                                                "TenantGuid": "@triggerBody()['TenantGuid']",
+                                                                "CorrelationId": "@guid()",
+                                                                "Data": [
+                                                                    {
+                                                                        "Key": "WorkflowExecutionGuid",
+                                                                        "Value": "@triggerBody()?['WorkflowExecutionGuid']"
+                                                                    },
+                                                                    {
+                                                                        "Key": "LogicAppWorkflowInstanceId",
+                                                                        "Value": "@variables('Current_Workflow')?['name']"
+                                                                    }
+                                                                ],
+                                                                "StepId": "@triggerBody()['StepId']"
+                                                            },
+                                                            "contentType": "application/json"
+                                                        }
+                                                    },
+                                                    "serviceProviderConfiguration": {
+                                                        "connectionName": "workflow-step-request-sb-connection-string",
+                                                        "operationId": "sendMessage",
+                                                        "serviceProviderId": "/serviceProviders/serviceBus"
+                                                    }
+                                                },
+                                                "runAfter": {},
+                                                "type": "ServiceProvider"
+                                            },
+                                            "Set_Return_Code_to_500": {
+                                                "inputs": {
+                                                    "name": "Return_Code",
+                                                    "value": 500
+                                                },
+                                                "runAfter": {
+                                                    "Activity_Start": [
+                                                        "TIMEDOUT",
+                                                        "SKIPPED",
+                                                        "FAILED"
+                                                    ]
+                                                },
+                                                "type": "SetVariable"
+                                            },
+                                            "Set_Return_code_to_400_for_new_activity_start": {
+                                                "inputs": {
+                                                    "name": "Return_Code",
+                                                    "value": 400
+                                                },
+                                                "runAfter": {
+                                                    "Activity_Start": [
+                                                        "Succeeded"
+                                                    ]
+                                                },
+                                                "type": "SetVariable"
+                                            }
+                                        }
+                                    },
+                                    "expression": {
+                                        "and": [
+                                            {
+                                                "equals": [
+                                                    "@variables('Filtered_State_Array_Length')",
+                                                    1
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "runAfter": {
+                                        "Set_Current_Step_Status": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "If"
+                                },
+                                "Set_Current_Step_Status": {
+                                    "inputs": {
+                                        "name": "Current_Step_Status",
+                                        "value": "@if(equals(variables('Filtered_State_Array_Length'), 0), 0, body('Filter_State_Array')?[0]?['Status'])"
+                                    },
+                                    "runAfter": {
+                                        "Set_Filtered_State_Array_Length": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "SetVariable"
+                                },
+                                "Set_Filtered_State_Array_Length": {
+                                    "inputs": {
+                                        "name": "Filtered_State_Array_Length",
+                                        "value": "@length(body('Filter_State_Array'))"
+                                    },
+                                    "runAfter": {
+                                        "Filter_State_Array": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "SetVariable"
+                                }
+                            }
+                        },
+                        "expression": {
+                            "or": [
+                                {
+                                    "equals": [
+                                        "@triggerBody()['State']",
+                                        "@null"
+                                    ]
+                                },
+                                {
+                                    "equals": [
+                                        "@triggerBody()['WorkflowExecutionGuid']",
+                                        "@null"
+                                    ]
+                                }
+                            ]
+                        },
+                        "runAfter": {},
+                        "type": "If"
+                    }
+                },
+                "runAfter": {
+                    "Initialize_Current_Step_Status": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Scope"
+            },
+            "Response": {
+                "inputs": {
+                    "statusCode": "@variables('Return_Code')"
+                },
+                "kind": "http",
+                "runAfter": {
+                    "Main_Activity": [
+                        "Succeeded",
+                        "TIMEDOUT",
+                        "SKIPPED",
+                        "FAILED"
+                    ]
+                },
+                "type": "Response"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "triggers": {
+            "manual": {
+                "inputs": {
+                    "schema": {
+                        "properties": {
+                            "OwnerInstanceGuid": {
+                                "type": "string"
+                            },
+                            "TenantGuid": {
+                                "type": "string"
+                            },
+                            "State": {
+                                "items": {
+                                    "properties": {
+                                        "Status": {
+                                            "type": "number"
+                                        },
+                                        "StepId": {
+                                            "type": "number"
+                                        }
+                                    },
+                                    "required": [
+                                        "Status",
+                                        "StepId"
+                                    ],
+                                    "type": "object"
+                                },
+                                "type": "array"
+                            },
+                            "StepId": {
+                                "type": "number"
+                            },
+                            "WorkflowExecutionGuid": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "OwnerInstanceGuid",
+                            "TenantGuid",
+                            "State",
+                            "StepId",
+                            "WorkflowExecutionGuid"
+                        ],
+                        "type": "object"
+                    }
+                },
+                "kind": "Http",
+                "type": "Request"
+            }
+        }
+    },
+    "kind": "Stateful"
+}
