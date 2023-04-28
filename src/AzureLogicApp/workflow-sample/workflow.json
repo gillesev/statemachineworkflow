@@ -1,0 +1,121 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "phase1": {
+                "type": "Scope",
+                "actions": {
+                    "Step_100": {
+                        "type": "Workflow",
+                        "inputs": {
+                            "host": {
+                                "workflow": {
+                                    "id": "workflow-step"
+                                }
+                            },
+                            "body": {
+                                "StepId": 100
+                            }
+                        },
+                        "runAfter": {}
+                    }
+                },
+                "runAfter": {}
+            },
+            "phase2": {
+                "type": "Scope",
+                "actions": {
+                    "Step_200": {
+                        "type": "Workflow",
+                        "inputs": {
+                            "host": {
+                                "workflow": {
+                                    "id": "workflow-step"
+                                }
+                            },
+                            "body": {
+                                "StepId": 200
+                            }
+                        },
+                        "runAfter": {}
+                    },
+                    "Step_201": {
+                        "type": "Workflow",
+                        "inputs": {
+                            "host": {
+                                "workflow": {
+                                    "id": "workflow-step"
+                                }
+                            },
+                            "body": {
+                                "StepId": 201
+                            }
+                        },
+                        "runAfter": {
+                            "Step_200": [
+                                "Succeeded"
+                            ]
+                        }
+                    },
+                    "Step_202": {
+                        "type": "Workflow",
+                        "inputs": {
+                            "host": {
+                                "workflow": {
+                                    "id": "workflow-step"
+                                }
+                            },
+                            "body": {
+                                "StepId": 202
+                            }
+                        },
+                        "runAfter": {
+                            "Step_200": [
+                                "Succeeded"
+                            ]
+                        }
+                    }
+                },
+                "runAfter": {
+                    "phase1": [
+                        "Succeeded"
+                    ]
+                }
+            },
+            "phase3": {
+                "type": "Scope",
+                "actions": {
+                    "Step_300": {
+                        "type": "Workflow",
+                        "inputs": {
+                            "host": {
+                                "workflow": {
+                                    "id": "workflow-step"
+                                }
+                            },
+                            "body": {
+                                "StepId": 300
+                            }
+                        },
+                        "runAfter": {}
+                    }
+                },
+                "runAfter": {
+                    "phase2": [
+                        "Succeeded"
+                    ]
+                }
+            }
+        },
+        "triggers": {
+            "manual": {
+                "type": "Request",
+                "kind": "Http",
+                "inputs": {}
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {}
+    },
+    "kind": "Stateful"
+}
